@@ -1,0 +1,32 @@
+''' 
+Objetivo: Função de soma, com quantidade variável de argumentos.
+Essa função é um raciocínio para melhorar o entendimento sobre criar funções em python e 
+o entendimento sobre *vartuple, que possibilita informar uma quantidade variável
+'''
+#criando a função soma, com numero variável de argumentos
+def soma(arg1, *vartuple):
+#criando a lista com o primeiro argumento e também obrigatório
+    lista = [arg1]
+#criando loop for para adcionar as demais variáveis dentro da lista
+    for i in vartuple:
+        lista.append(i)
+#criando variável conforme o tamanho da lista, pois será usado para efetuar a soma com essa mesma quantidade 
+    tamanhoLista = len(lista)
+#criando a variável x para efetuar a conta de soma entre as variáveis no proximo bloco de iteração
+    x = 0
+#criando loop while para que seja repetido conforme a quantidade de argumentos. Explicado acima na criação da variável x 
+#esse loop tem como objetivo repetir o conteúdo até que a variável "tamanhoLista" se torne zero, sendo que no final há a execução da redução de quantidade dessa variável
+    while tamanhoLista > 0:
+#dentro do loop while, será executado um loop for com repetição conforme o tamanho da variável tamanhoLista, que é igual ao tamanho de argumentos. 
+        for e in str(tamanhoLista):
+#somando o primeiro item da lista, dentro da variável x
+          x = x + lista[0]
+#depois de somado, aqui esse item da lista é excluido para que não seja somado novamente,
+          del lista[0]
+#criando uma condição para que a repetição se encerre assim que a lista estiver vazia
+          if lista == []:
+            break
+#criado a condição de redução do tamanho da lista 
+        tamanhoLista  = tamanhoLista - 1    
+#imprimindo dados para visualização
+    print(x)
