@@ -1,0 +1,39 @@
+!pip install pdfplumber #instalando biblioteca pdfplumber
+
+import pdfplumber as pdf_pl #importando biblioteca
+
+arquivo = "TabelaDebitosJudiciais.pdf" #fonte: https://www.tjsp.jus.br/Download/Tabelas/TabelaDebitosJudiciais.pdf
+
+pdf = pdf_pl.open(arquivo) #Abrindo aquivo
+
+import pandas as pd #importando biblioteca
+
+p = pdf.pages[0] # possui 4 tabelas (0 a 3) >>>>>>> acessando a pagina 1 do aquivo pdf
+p2 = pdf.pages[1]  # possui 3 tabelas (0 a 2) >>>>>>> acessando a pagina 2 do aquivo pdf
+
+imagem = p.extract_tables()     #Extraindo tabelas do PDF conforme pagina
+imagem2 = p2.extract_tables()     #Extraindo tabelas do PDF conforme pagina
+
+df = pd.DataFrame(imagem[0])      #Transformando tabela extraida em DataFrame
+print(df)     #visualizando resultado para teste
+
+tamanho_pg1 = len(imagem1) # verificando quantidade de tabelas em cada pagina
+tamanho_pg2 = leb(imagem2) # verificando quantidade de tabelas em cada pagina
+
+#separando tabelas em DF's
+df1_0 = pd.DataFrame(imagem[0])
+df1_1 = pd.DataFrame(imagem[1])
+df1_2 = pd.DataFrame(imagem[2])
+df1_3 = pd.DataFrame(imagem[3])
+df2_0 = pd.DataFrame(imagem2[0])
+df2_1 = pd.DataFrame(imagem2[1])
+df2_2 = pd.DataFrame(imagem2[2])
+
+m = pd.merge(df1_0, df1_1, how = 'outer') # empilhando dois dataframes >> opção 1
+
+dfmult1 = pd.concat([df1_0, df1_1, df1_2, df1_3]) # empilhando mais de dois dataframes >> opção 2
+dfmult2 = pd.concat([df2_0, df2_1, df2_2]) # empilhando mais de dois dataframes >> opção 2
+
+
+
+
