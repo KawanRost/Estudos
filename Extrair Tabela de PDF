@@ -14,26 +14,31 @@ p2 = pdf.pages[1]  # possui 3 tabelas (0 a 2) >>>>>>> acessando a pagina 2 do aq
 imagem = p.extract_tables()     #Extraindo tabelas do PDF conforme pagina
 imagem2 = p2.extract_tables()     #Extraindo tabelas do PDF conforme pagina
 
-df = pd.DataFrame(imagem[0])      #Transformando tabela extraida em DataFrame
-print(df)     #visualizando resultado para teste
+df1 = pd.DataFrame(imagem)      #Transformando tabela extraida em DataFrame
+df2 = pd.DataFrame(imagem2)
 
 tamanho_pg1 = len(imagem1) # verificando quantidade de tabelas em cada pagina
-tamanho_pg2 = leb(imagem2) # verificando quantidade de tabelas em cada pagina
+tamanho_pg2 = len(imagem2) # verificando quantidade de tabelas em cada pagina
 
-#separando tabelas em DF's
-df1_0 = pd.DataFrame(imagem[0])
-df1_1 = pd.DataFrame(imagem[1])
-df1_2 = pd.DataFrame(imagem[2])
-df1_3 = pd.DataFrame(imagem[3])
-df2_0 = pd.DataFrame(imagem2[0])
-df2_1 = pd.DataFrame(imagem2[1])
-df2_2 = pd.DataFrame(imagem2[2])
+dfmult1 = pd.DataFrame(imagem[0]) #criando df com primeira tabela da pagina 1
+dfmult2 = pd.DataFrame(imagem2[0]) #criando df com primeira tabela da pagina2
 
-m = pd.merge(df1_0, df1_1, how = 'outer') # empilhando dois dataframes >> opção 1
+# criando loop for para incluir as demais tabelas da pagina dentro do df1
+for i in range(0, tamanho1):
+  df1 = pd.DataFrame(imagem[i])
+  m = pd.merge(dfmult1, df1, how = 'outer')
+    # atualizando dfmult1 com a variavel m, que consolidou todas as tabelas da pg1 do arquivo em um unico df
+    dfmult1 = m
 
-dfmult1 = pd.concat([df1_0, df1_1, df1_2, df1_3]) # empilhando mais de dois dataframes >> opção 2
-dfmult2 = pd.concat([df2_0, df2_1, df2_2]) # empilhando mais de dois dataframes >> opção 2
+# criando loop for para incluir as demais tabelas da pagina dentro do df2
+for i in range(0, tamanho2):
+  df2 = pd.DataFrame(imagem2[i])
+  m2 = pd.merge(dfmult2, df2, how = 'outer')
+    # atualizando dfmult1 com a variavel m2, que consolidou todas as tabelas da pg2 do arquivo em um unico df
+    dfmult2 = m2
 
+# efetuando ultima consolidação de df, no caso pg1 e pg2
+m3 = pd.merge(m, m2, how = 'outer')
 
-
-
+#salvando aquivo em excel
+m3.to_excel("./arquivo.xlsx")
